@@ -1,4 +1,3 @@
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity'
 import {
     createReducer,
     on,
