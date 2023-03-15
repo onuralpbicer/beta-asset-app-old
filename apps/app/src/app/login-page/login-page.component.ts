@@ -1,6 +1,8 @@
-import { Component, OnInit, isDevMode } from '@angular/core'
-import { FormBuilder, FormControl, Validators } from '@angular/forms'
-import { LoginService } from '../login/login.service'
+import { Component, OnInit } from '@angular/core'
+import { FormBuilder, Validators } from '@angular/forms'
+import { Store } from '@ngrx/store'
+import { ILoginState } from '../login/login.reducer'
+import { login } from '../login/login.actions'
 
 @Component({
     selector: 'beta-asset-login-page',
@@ -13,7 +15,10 @@ export class LoginPageComponent implements OnInit {
         password: ['', Validators.required],
     })
 
-    constructor(private fb: FormBuilder, private loginService: LoginService) {}
+    constructor(
+        private fb: FormBuilder,
+        private loginStore: Store<ILoginState>,
+    ) {}
 
     ngOnInit(): void {}
 
@@ -22,6 +27,6 @@ export class LoginPageComponent implements OnInit {
         console.log(this.form.value)
         if (!email || !password) return
 
-        this.loginService.login(email, password)
+        this.loginStore.dispatch(login({ email, password }))
     }
 }
