@@ -1,0 +1,28 @@
+<ion-content [forceOverscroll]="false">
+    <div class="center">
+        <div class="form-container">
+            <ion-title>Login</ion-title>
+            <form [formGroup]="form" (ngSubmit)="login()" autocomplete="off">
+                <ion-item lines="full">
+                    <ion-label position="stacked">Email</ion-label>
+                    <ion-input
+                        placeholder="Email"
+                        formControlName="email"
+                        autocomplete="off"
+                    ></ion-input>
+                </ion-item>
+                <ion-item lines="full">
+                    <ion-label position="stacked">Password</ion-label>
+                    <ion-input
+                        placeholder="Password"
+                        type="password"
+                        formControlName="password"
+                        autocomplete="off"
+                    ></ion-input>
+                </ion-item>
+
+                <ion-button expand="block" type="submit"> Login </ion-button>
+            </form>
+        </div>
+    </div>
+</ion-content>
