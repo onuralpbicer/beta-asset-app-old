@@ -61,7 +61,7 @@ const login: Middleware = async (ctx) => {
             throw new InternalServerError('Database Error')
         else if (err.message === 'No Users found')
             throw new UnauthorizedError(noLogin)
-        else if (err.message === 'invalidPassword')
+        else if (err.message === invalidPassword)
             throw new UnauthorizedError(noLogin)
         else throw err
     }
