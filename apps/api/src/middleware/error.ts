@@ -4,8 +4,7 @@ export const errorMiddleware: Middleware = async (ctx, next) => {
     try {
         await next()
     } catch (err) {
-        console.log(err instanceof Error)
-        console.log(err instanceof CustomError)
+        console.error('Error: ', err.message ?? err)
         if (err instanceof CustomError) {
             ctx.status = err.code ?? 500
             ctx.body = {
@@ -55,8 +54,8 @@ export class BadRequestError extends CustomError {
 }
 
 export class UnauthorizedError extends CustomError {
-    constructor(message: string) {
-        super(message, 401, 'UnauthorizedError')
+    constructor(message = 'UnauthorizedError') {
+        super(message, 401, message)
     }
 }
 
