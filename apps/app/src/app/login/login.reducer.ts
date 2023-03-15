@@ -1,5 +1,11 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity'
-import { createReducer, on, Action } from '@ngrx/store'
+import {
+    createReducer,
+    on,
+    Action,
+    createFeatureSelector,
+    createSelector,
+} from '@ngrx/store'
 
 import * as LoginActions from './login.actions'
 
@@ -29,6 +35,23 @@ const reducer = createReducer(
         ...state,
         ...initialLoginState,
     })),
+)
+
+const loginSelector = createFeatureSelector<ILoginState>(LOGIN_FEATURE_KEY)
+
+export const selectUserInfo = createSelector(loginSelector, (state) => ({
+    isAdmin: state.isAdmin,
+    user_id: state.user_id,
+}))
+
+export const selectUserID = createSelector(
+    loginSelector,
+    (state) => state.user_id,
+)
+
+export const selectLoginLoading = createSelector(
+    loginSelector,
+    (state) => state.loading,
 )
 
 export function loginReducer(state: ILoginState | undefined, action: Action) {

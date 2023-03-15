@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { LoginModule } from './login/login.module'
+import { authGuard } from './login/login.guard'
 
 const routes: Routes = [
     {
         path: 'home',
+        canActivate: [authGuard],
         loadChildren: () =>
             import('./home-page/home-page.module').then(
                 (m) => m.HomePageModule,
