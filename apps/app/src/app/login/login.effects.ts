@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core'
 import { createEffect, Actions, ofType } from '@ngrx/effects'
 
 import * as LoginActions from './login.actions'
-import * as LoginFeature from './login.reducer'
 
 import { switchMap, catchError, of, map, tap } from 'rxjs'
 import { LoginService } from './login.service'

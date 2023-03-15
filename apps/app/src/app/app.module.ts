@@ -7,9 +7,22 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular'
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
 import { HomePageModule } from './home-page/home-page.module'
-import { StoreModule } from '@ngrx/store'
+import { ActionReducer, MetaReducer, StoreModule } from '@ngrx/store'
 import { EffectsModule } from '@ngrx/effects'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
+import { localStorageSync } from 'ngrx-store-localstorage'
+import { LOGIN_FEATURE_KEY } from './login/login.reducer'
+
+export function localStorageSyncReducer(
+    reducer: ActionReducer<any>,
+): ActionReducer<any> {
+    return localStorageSync({
+        keys: [LOGIN_FEATURE_KEY],
+        storageKeySerializer: (key) => `beta_asset_${key}`,
+        rehydrate: true,
+    })(reducer)
+}
+const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer]
 
 @NgModule({
     declarations: [AppComponent],
@@ -22,7 +35,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools'
         StoreModule.forRoot(
             {},
             {
-                metaReducers: [],
+                metaReducers,
                 runtimeChecks: {
                     strictActionImmutability: true,
                     strictStateImmutability: true,
