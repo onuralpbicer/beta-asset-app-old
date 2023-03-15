@@ -1,5 +1,6 @@
 import koa from 'koa'
 import { PrismaClient } from '@prisma/client'
+import { InternalServerError, errorMiddleware } from './middleware/error'
 
 const prisma = new PrismaClient()
 
@@ -8,8 +9,11 @@ const port = process.env.PORT ? Number(process.env.PORT) : 3000
 
 const app = new koa()
 
+app.use(errorMiddleware)
+
 app.use(async (ctx) => {
-    ctx.body = { message: await prisma.users.findMany() }
+    throw new InternalServerError('testing')
+    ctx.body = { message: await prisma.organisations.findMany() }
 })
 
 app.listen(port, host, () => {
