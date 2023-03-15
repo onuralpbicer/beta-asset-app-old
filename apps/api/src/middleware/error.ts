@@ -65,3 +65,9 @@ export class NotFoundError extends CustomError {
         super(message, 404, 'NotFoundError')
     }
 }
+
+export class UnknownError extends InternalServerError {
+    constructor() {
+        super('Unknown Error')
+    }
+}

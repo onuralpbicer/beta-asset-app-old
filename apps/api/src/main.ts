@@ -1,20 +1,20 @@
 import koa from 'koa'
-import { PrismaClient } from '@prisma/client'
-import { InternalServerError, errorMiddleware } from './middleware/error'
-
-const prisma = new PrismaClient()
+import { errorMiddleware } from './middleware/error'
+import bodyParser from 'koa-bodyparser'
+import authRouter from './routes/auth'
+import { setupDatabase } from './shared/database'
 
 const host = process.env.HOST ?? 'localhost'
 const port = process.env.PORT ? Number(process.env.PORT) : 3000
 
+setupDatabase()
+
 const app = new koa()
 
 app.use(errorMiddleware)
+app.use(bodyParser())
 
-app.use(async (ctx) => {
-    throw new InternalServerError('testing')
-    ctx.body = { message: await prisma.organisations.findMany() }
-})
+app.use(authRouter.routes())
 
 app.listen(port, host, () => {
     console.log(`[ ready ] http://${host}:${port}`)
