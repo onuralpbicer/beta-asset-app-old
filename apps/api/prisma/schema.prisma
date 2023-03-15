@@ -1,0 +1,126 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Organisations {
+    id              String            @id @default(uuid())
+    name            String
+    contact_name    String
+    contact_email   String
+    contact_number  String
+    Users           Users[]
+    Equipment_Types Equipment_Types[]
+}
+
+model Users {
+    id            String         @id @default(uuid())
+    email         String
+    name          String
+    last_name     String
+    password_hash String
+    Organisations Organisations  @relation(fields: [org_id], references: [id])
+    org_id        String
+    Maintenances  Maintenances[]
+}
+
+model Equipment_Types {
+    id                                String                              @id @default(uuid())
+    name                              String
+    Organisations                     Organisations                       @relation(fields: [org_id], references: [id])
+    org_id                            String
+    Equipment_Type_Fields             Equipment_Type_Fields[]
+    Equipments                        Equipments[]
+    Equipment_Type_Maintenance_Fields Equipment_Type_Maintenance_Fields[]
+    Maintenance_Fields                Maintenance_Fields[]
+}
+
+enum Equipment_Type_Fields_Types {
+    TEXT
+    NUMBER
+    TOGGLE
+    DROPDOWN
+}
+
+model Equipment_Type_Fields {
+    id                String                      @id @default(uuid())
+    Equipment_Types   Equipment_Types             @relation(fields: [equipment_type_id], references: [id])
+    equipment_type_id String
+    name              String
+    value             String
+    type              Equipment_Type_Fields_Types
+    min               Int?
+    max               Int?
+    unit              String
+    options           String[]                    @default([])
+    Equipment_Fields  Equipment_Fields[]
+}
+
+model Equipments {
+    id                String             @id @default(uuid())
+    Equipment_Types   Equipment_Types    @relation(fields: [equipment_type_id], references: [id])
+    equipment_type_id String
+    name              String
+    location          String?
+    brand             String?
+    serial_number     String
+    Equipment_Fields  Equipment_Fields[]
+    Maintenances      Maintenances[]
+}
+
+model Equipment_Fields {
+    Equipment_Type_Fields Equipment_Type_Fields @relation(fields: [field_id], references: [id])
+    field_id              String
+    Equipments            Equipments            @relation(fields: [equipment_id], references: [id])
+    equipment_id          String
+    value                 String
+
+    @@id([field_id, equipment_id])
+}
+
+model Equipment_Type_Maintenance_Fields {
+    id                String          @id @default(uuid())
+    Equipment_Types   Equipment_Types @relation(fields: [equipment_type_id], references: [id])
+    equipment_type_id String
+    description       String
+}
+
+enum Maintenance_Types {
+    PERIODICAL
+    FAULT
+}
+
+model Maintenances {
+    id                 String               @id @default(uuid())
+    Equipments         Equipments           @relation(fields: [equipment_id], references: [id])
+    equipment_id       String
+    datetime           DateTime
+    Users              Users                @relation(fields: [user_id], references: [id])
+    user_id            String
+    type               Maintenance_Types
+    notes              String?
+    Maintenance_Fields Maintenance_Fields[]
+}
+
+enum Maintenance_Status {
+    GOOD
+    FIXED
+    REPLACED
+}
+
+model Maintenance_Fields {
+    Equipment_Types   Equipment_Types @relation(fields: [equipment_type_id], references: [id])
+    equipment_type_id String
+
+    Maintenances   Maintenances @relation(fields: [maintenance_id], references: [id])
+    maintenance_id String
+
+    status Maintenance_Status
+    notes  String
+
+    @@id([equipment_type_id, maintenance_id])
+}
