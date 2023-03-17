@@ -1,22 +1,3 @@
-ion-list {
-    box-sizing: content-box;
+@import '../mixins/list-page.scss';
 
-    ion-text,
-    ion-skeleton-text {
-        display: block;
-        width: 80%;
-        max-width: 1024px;
-        margin-inline: auto;
-
-        padding: 1rem;
-        border-radius: 64px;
-
-        &:not(:first-of-type) {
-            margin-top: 1rem;
-        }
-    }
-
-    ion-text {
-        border: 1px solid white;
-    }
-}
+@include listPage;
