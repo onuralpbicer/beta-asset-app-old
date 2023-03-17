@@ -28,6 +28,7 @@ const login: Middleware = async (ctx) => {
                 password_hash: true,
                 id: true,
                 isAdmin: true,
+                org_id: true,
             },
             where: {
                 email,
@@ -46,7 +47,11 @@ const login: Middleware = async (ctx) => {
         if (!result) throw new Error(invalidPassword)
 
         const auth_token = jwt.sign(
-            { user_id: userCandidate.id, isAdmin: userCandidate.isAdmin },
+            {
+                user_id: userCandidate.id,
+                isAdmin: userCandidate.isAdmin,
+                org_id: userCandidate.org_id,
+            },
             process.env.JWT_TOKEN,
             {
                 expiresIn: '24h',

@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken'
 import { UnauthorizedError } from './error'
-import { StateMiddleware } from '../shared/types'
+import { IStateMiddleware } from '../shared/types'
 
-export const authMiddleware: StateMiddleware = async (ctx, next) => {
+export const authMiddleware: IStateMiddleware = async (ctx, next) => {
     const authToken = ctx.headers.authorization
     if (!authToken) throw new UnauthorizedError()
 
@@ -21,6 +21,7 @@ export const authMiddleware: StateMiddleware = async (ctx, next) => {
             ...decoded,
             user_id: decoded.user_id,
             isAdmin: decoded.isAdmin,
+            org_id: decoded.org_id,
         }
     } catch (err) {
         console.log('error')
