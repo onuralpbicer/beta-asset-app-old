@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import environment from '../../environment/environment'
-import { delay, retry } from 'rxjs'
+import { retry } from 'rxjs'
 import { IEquipmentTypes } from '../models/model'
+import { devDelay } from '../helpers/observable'
 
 @Injectable()
 export class EquipmentTypesService {
@@ -11,6 +12,6 @@ export class EquipmentTypesService {
     public getEquipmentTypes() {
         return this.http
             .get<IEquipmentTypes[]>(environment.apiUrl + '/equipment-types')
-            .pipe(delay(2000), retry(3))
+            .pipe(devDelay(), retry(3))
     }
 }

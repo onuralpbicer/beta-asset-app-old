@@ -4,11 +4,11 @@ import { IEquipmentTypes } from '../models/model'
 import { SearchbarCustomEvent, ViewWillEnter } from '@ionic/angular'
 
 @Component({
-    selector: 'beta-asset-home-page',
-    templateUrl: './home-page.component.html',
-    styleUrls: ['./home-page.component.scss'],
+    selector: 'beta-asset-equipment-types',
+    templateUrl: './equipment-types.component.html',
+    styleUrls: ['./equipment-types.component.scss'],
 })
-export class HomePageComponent implements OnInit, ViewWillEnter {
+export class EquipmentTypesPageComponent implements OnInit, ViewWillEnter {
     public equipmentTypes: IEquipmentTypes[] = []
     public loading = false
 
@@ -29,8 +29,8 @@ export class HomePageComponent implements OnInit, ViewWillEnter {
         )
     }
 
-    onSearchChange(event: any) {
-        this.search = event.detail.value
+    onSearchChange(event: unknown) {
+        this.search = (event as SearchbarCustomEvent).detail.value ?? ''
     }
 
     ngOnInit(): void {

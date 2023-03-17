@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core'
-import { HomePageComponent } from './home-page.component'
-import { HomePageRoutingModule } from './home-page.routing.module'
+import { EquipmentTypesPageComponent } from './equipment-types.component'
+import { EquipmentTypesPageRoutingModule } from './equipment-types.routing.module'
 import { EquipmentTypesService } from './equipment-types.service'
 import { IonicModule } from '@ionic/angular'
 import { CommonModule } from '@angular/common'
 
 @NgModule({
-    declarations: [HomePageComponent],
-    imports: [HomePageRoutingModule, IonicModule, CommonModule],
+    declarations: [EquipmentTypesPageComponent],
+    imports: [EquipmentTypesPageRoutingModule, IonicModule, CommonModule],
     providers: [EquipmentTypesService],
 })
 export class HomePageModule {}
