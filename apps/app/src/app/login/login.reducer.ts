@@ -60,6 +60,11 @@ export const selectLoginLoading = createSelector(
     (state) => state.loading,
 )
 
+export const selectAuthToken = createSelector(
+    loginSelector,
+    (state) => state.auth_token,
+)
+
 export function loginReducer(state: ILoginState | undefined, action: Action) {
     return reducer(state, action)
 }
