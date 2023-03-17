@@ -25,9 +25,10 @@ export const initialLoginState: ILoginState = {
 const reducer = createReducer(
     initialLoginState,
     on(LoginActions.login, (state) => ({ ...state, loading: true })),
-    on(LoginActions.loginSuccess, (state, action) => ({
+    on(LoginActions.loginSuccess, (state, { user_id, isAdmin }) => ({
         ...state,
-        ...action,
+        user_id,
+        isAdmin,
         loading: false,
     })),
     on(LoginActions.loginFail, (state) => ({
