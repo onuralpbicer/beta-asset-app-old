@@ -8,7 +8,7 @@ const routes: Routes = [
         path: 'equipment-types',
         canActivate: [authGuard],
         loadChildren: () =>
-            import('./equipment-types/equipment-types.module').then(
+            import('./equipment-types-page/equipment-types-page.module').then(
                 (m) => m.HomePageModule,
             ),
     },

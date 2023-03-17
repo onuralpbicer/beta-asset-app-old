@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
-import { EquipmentTypesPageComponent } from './equipment-types.component'
+import { EquipmentTypesPageComponent } from './equipment-types-page.component'
 
 const routes: Routes = [
     {

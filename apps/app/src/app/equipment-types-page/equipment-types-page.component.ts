@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core'
-import { EquipmentTypesService } from './equipment-types.service'
+import { EquipmentTypesService } from './equipment-types-page.service'
 import { IEquipmentTypes } from '../models/model'
 import { SearchbarCustomEvent, ViewWillEnter } from '@ionic/angular'
 
 @Component({
     selector: 'beta-asset-equipment-types',
-    templateUrl: './equipment-types.component.html',
-    styleUrls: ['./equipment-types.component.scss'],
+    templateUrl: './equipment-types-page.component.html',
+    styleUrls: ['./equipment-types-page.component.scss'],
 })
 export class EquipmentTypesPageComponent implements OnInit, ViewWillEnter {
     public equipmentTypes: IEquipmentTypes[] = []
