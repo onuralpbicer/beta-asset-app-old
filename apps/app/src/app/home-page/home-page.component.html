@@ -1,1 +1,28 @@
-<div>test123</div>
+<ion-header>
+    <ion-toolbar>
+        <ion-title class="ion-text-center"> Equipment Types </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content [forceOverscroll]="false">
+    <ion-searchbar
+        [value]="search"
+        (ionChange)="onSearchChange($event)"
+    ></ion-searchbar>
+    <ion-list lines="none" *ngIf="!loading">
+        <ion-text
+            class="ion-text-center"
+            *ngFor="let equipment of filteredEquipmentTypes"
+            lines="none"
+        >
+            {{ equipment.name }}
+        </ion-text>
+    </ion-list>
+    <ion-list lines="none" *ngIf="loading">
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+    </ion-list>
+</ion-content>
