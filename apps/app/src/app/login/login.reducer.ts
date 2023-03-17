@@ -13,24 +13,30 @@ export const LOGIN_FEATURE_KEY = 'login'
 export interface ILoginState {
     user_id?: string
     isAdmin?: boolean
+    auth_token?: string
     loading: boolean
 }
 
 export const initialLoginState: ILoginState = {
     user_id: undefined,
     isAdmin: undefined,
+    auth_token: undefined,
     loading: false,
 }
 
 const reducer = createReducer(
     initialLoginState,
     on(LoginActions.login, (state) => ({ ...state, loading: true })),
-    on(LoginActions.loginSuccess, (state, { user_id, isAdmin }) => ({
-        ...state,
-        user_id,
-        isAdmin,
-        loading: false,
-    })),
+    on(
+        LoginActions.loginSuccess,
+        (state, { user_id, isAdmin, auth_token }) => ({
+            ...state,
+            auth_token,
+            user_id,
+            isAdmin,
+            loading: false,
+        }),
+    ),
     on(LoginActions.loginFail, (state) => ({
         ...state,
         ...initialLoginState,

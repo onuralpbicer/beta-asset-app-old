@@ -18,8 +18,12 @@ export class LoginEffects {
             ofType(LoginActions.login),
             switchMap(({ email, password }) =>
                 this.service.login(email, password).pipe(
-                    map(({ user_id, isAdmin }) =>
-                        LoginActions.loginSuccess({ user_id, isAdmin }),
+                    map(({ user_id, isAdmin, auth_token }) =>
+                        LoginActions.loginSuccess({
+                            user_id,
+                            isAdmin,
+                            auth_token,
+                        }),
                     ),
                     catchError((error) => {
                         console.log(error)

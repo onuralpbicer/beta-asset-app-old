@@ -15,11 +15,12 @@ export class LoginService {
                 password,
             })
             .pipe(
-                map((value) =>
-                    jwt_decode<{ user_id: string; isAdmin: boolean }>(
+                map((value) => ({
+                    ...jwt_decode<{ user_id: string; isAdmin: boolean }>(
                         value.auth_token,
                     ),
-                ),
+                    auth_token: value.auth_token,
+                })),
             )
     }
 }
