@@ -25,7 +25,7 @@ const routes: Routes = [
         redirectTo: 'equipment-types',
     },
     {
-        path: '',
+        path: '**',
         redirectTo: 'login',
         pathMatch: 'full',
     },
