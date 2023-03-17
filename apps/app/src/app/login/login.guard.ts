@@ -12,3 +12,12 @@ export const authGuard: CanActivateFn = () => {
         map((user_id) => (user_id ? true : router.parseUrl('/login'))),
     )
 }
+
+export const loggedInGuard: CanActivateFn = () => {
+    const user_id$ = inject(Store).select(selectUserID)
+    const router = inject(Router)
+
+    return user_id$.pipe(
+        map((user_id) => (!user_id ? true : router.parseUrl('/home'))),
+    )
+}
