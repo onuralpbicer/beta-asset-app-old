@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { EquipmentTypesService } from './equipment-types-page.service'
-import { IEquipmentTypes } from '../models/model'
+import { ID, IEquipmentTypes } from '../models/model'
 import { SearchbarCustomEvent, ViewWillEnter } from '@ionic/angular'
 
 @Component({
@@ -18,6 +18,10 @@ export class EquipmentTypesPageComponent implements OnInit, ViewWillEnter {
 
     ionViewWillEnter() {
         this.search = ''
+    }
+
+    getRouterLink(id: ID) {
+        return `/equipments/${id}`
     }
 
     get filteredEquipmentTypes() {
