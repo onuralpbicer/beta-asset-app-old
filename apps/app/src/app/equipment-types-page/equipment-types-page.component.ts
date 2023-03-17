@@ -24,6 +24,25 @@ export class EquipmentTypesPageComponent implements OnInit, ViewWillEnter {
         return `/equipments/${id}`
     }
 
+    refresh(event: any) {
+        this.loadEquipmentTypes(() => event.target.complete())
+    }
+
+    loadEquipmentTypes(onComplete?: () => void) {
+        this.search = ''
+        this.loading = true
+        this.equipmentTypesService.getEquipmentTypes().subscribe({
+            next: (equipmentTypes) => {
+                this.equipmentTypes = equipmentTypes
+                this.loading = false
+            },
+            error: (error) => {
+                console.log(error)
+            },
+        })
+        onComplete && onComplete()
+    }
+
     get filteredEquipmentTypes() {
         if (this.search.length < 2) return this.equipmentTypes
 
@@ -38,15 +57,6 @@ export class EquipmentTypesPageComponent implements OnInit, ViewWillEnter {
     }
 
     ngOnInit(): void {
-        this.loading = true
-        this.equipmentTypesService.getEquipmentTypes().subscribe({
-            next: (equipmentTypes) => {
-                this.equipmentTypes = equipmentTypes
-                this.loading = false
-            },
-            error: (error) => {
-                console.log(error)
-            },
-        })
+        this.loadEquipmentTypes()
     }
 }

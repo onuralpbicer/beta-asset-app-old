@@ -4,6 +4,11 @@
     </ion-toolbar>
 </ion-header>
 <ion-content [forceOverscroll]="false">
+    <ion-refresher
+        slot="fixed"
+        (ionRefresh)="refresh($event)"
+        [disabled]="loading"
+    ></ion-refresher>
     <ion-searchbar
         [value]="search"
         (ionChange)="onSearchChange($event)"
