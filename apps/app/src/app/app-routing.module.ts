@@ -5,11 +5,19 @@ import { authGuard, loggedInGuard } from './login/login.guard'
 
 const routes: Routes = [
     {
+        path: 'equipments',
+        canActivate: [authGuard],
+        loadChildren: () =>
+            import('./equipments-page/equipments-page.module').then(
+                (m) => m.EquipmentsPageModule,
+            ),
+    },
+    {
         path: 'equipment-types',
         canActivate: [authGuard],
         loadChildren: () =>
             import('./equipment-types-page/equipment-types-page.module').then(
-                (m) => m.HomePageModule,
+                (m) => m.EquipmentsTypesPageModule,
             ),
     },
     {
