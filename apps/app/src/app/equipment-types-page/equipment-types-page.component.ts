@@ -24,6 +24,7 @@ export class EquipmentTypesPageComponent implements OnInit, ViewWillEnter {
         return `/equipments/${id}`
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     refresh(event: any) {
         this.loadEquipmentTypes(() => event.target.complete())
     }

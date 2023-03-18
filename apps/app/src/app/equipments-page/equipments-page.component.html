@@ -5,9 +5,34 @@
             text=""
             slot="start"
         ></ion-back-button>
-        <ion-title class="ion-text-center"> Equipment Types </ion-title>
+        <ion-title class="ion-text-center"> Equipments </ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content [forceOverscroll]="false">
-    <p>equipments-page works!</p>
+    <ion-refresher
+        slot="fixed"
+        (ionRefresh)="refresh($event)"
+        [disabled]="loading"
+    ></ion-refresher>
+    <ion-searchbar
+        [value]="search"
+        (ionChange)="onSearchChange($event)"
+    ></ion-searchbar>
+    <ion-list lines="none" *ngIf="!loading">
+        <ion-text
+            class="ion-text-center"
+            *ngFor="let equipment of filteredEquipments"
+            lines="none"
+        >
+            {{ equipment.name }}
+        </ion-text>
+    </ion-list>
+    <ion-list lines="none" *ngIf="loading">
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+    </ion-list>
 </ion-content>
