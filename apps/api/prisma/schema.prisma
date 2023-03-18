@@ -84,10 +84,11 @@ model Equipment_Fields {
 }
 
 model Equipment_Type_Maintenance_Fields {
-    id                String          @id @default(uuid())
-    Equipment_Types   Equipment_Types @relation(fields: [equipment_type_id], references: [id])
-    equipment_type_id String
-    description       String
+    id                 String               @id @default(uuid())
+    Equipment_Types    Equipment_Types      @relation(fields: [equipment_type_id], references: [id])
+    equipment_type_id  String
+    description        String
+    Maintenance_Fields Maintenance_Fields[]
 }
 
 enum Maintenance_Types {
@@ -114,14 +115,17 @@ enum Maintenance_Status {
 }
 
 model Maintenance_Fields {
-    Equipment_Types   Equipment_Types @relation(fields: [equipment_type_id], references: [id])
-    equipment_type_id String
+    Equipment_Type_Maintenance_Fields Equipment_Type_Maintenance_Fields @relation(fields: [field_id], references: [id])
+    field_id                          String
 
     Maintenances   Maintenances @relation(fields: [maintenance_id], references: [id])
     maintenance_id String
 
-    status Maintenance_Status
-    notes  String
+    status            Maintenance_Status
+    notes             String
+    Equipment_Types   Equipment_Types?   @relation(fields: [equipment_TypesId], references: [id])
+    equipment_TypesId String?
 
-    @@id([equipment_type_id, maintenance_id])
+    @@id([field_id, maintenance_id])
+    @@unique([field_id, maintenance_id])
 }

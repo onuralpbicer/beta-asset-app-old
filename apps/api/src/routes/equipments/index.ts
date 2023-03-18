@@ -1,10 +1,12 @@
 import Router from 'koa-router'
 import getEquipmentDetails from './getEquipmentDetails'
+import getMaintenanceSummaryForEquipment from './getMaintenanceSummary'
 
 const router = new Router({
-    prefix: '/equipments',
+    prefix: '/equipments/:id',
 })
 
-router.get('/:id', getEquipmentDetails)
+router.get('/', getEquipmentDetails)
+router.get('/maintenances', getMaintenanceSummaryForEquipment)
 
 export default router
