@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { retry } from 'rxjs'
 import environment from '../../environment/environment'
 import { ID, IEquipmentSummary } from '../models/model'
-import { devDelay } from '../helpers/observable'
 
 @Injectable({
     providedIn: 'root',
@@ -12,11 +10,9 @@ export class EquipmentsService {
     constructor(private http: HttpClient) {}
 
     public getEquipmentList(equipment_type_id: ID) {
-        return this.http
-            .get<IEquipmentSummary[]>(
-                environment.apiUrl +
-                    `/equipment-types/${equipment_type_id}/equipments`,
-            )
-            .pipe(devDelay(), retry(3))
+        return this.http.get<IEquipmentSummary[]>(
+            environment.apiUrl +
+                `/equipment-types/${equipment_type_id}/equipments`,
+        )
     }
 }

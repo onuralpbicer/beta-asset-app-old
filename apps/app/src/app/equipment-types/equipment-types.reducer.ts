@@ -11,6 +11,7 @@ import {
     loadEquipmentTypesFail,
     loadEquipmentTypesSuccess,
 } from './equipment-types.actions'
+import { login } from '../login/login.actions'
 
 export const EQUIPMENT_TYPES_FEATURE_KEY = 'equipment_types'
 
@@ -40,6 +41,7 @@ export const reducer = createReducer(
         ...state,
         loading: false,
     })),
+    on(login, () => initialState),
 )
 
 const selector = createFeatureSelector<IEquipmentTypesState>(

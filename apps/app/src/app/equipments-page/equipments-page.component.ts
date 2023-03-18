@@ -1,9 +1,24 @@
 import { Component, OnInit } from '@angular/core'
-import { EquipmentsService } from './equipments.service'
 import { ActivatedRoute } from '@angular/router'
-import { map, switchMap, take } from 'rxjs'
+import {
+    BehaviorSubject,
+    Observable,
+    debounce,
+    map,
+    of,
+    switchMap,
+    take,
+} from 'rxjs'
 import { IEquipmentSummary } from '../models/model'
 import { SearchbarCustomEvent, ViewWillEnter } from '@ionic/angular'
+import { Store } from '@ngrx/store'
+import {
+    IEquipmentsState,
+    selectEquipmentList,
+    selectEquipmentListLoading,
+} from '../equipments/equipments.reducer'
+import { loadEquipmentList } from '../equipments/equipments.actions'
+import { PartialPick } from '../helpers/types'
 
 @Component({
     selector: 'beta-asset-equipments-page',
@@ -11,18 +26,18 @@ import { SearchbarCustomEvent, ViewWillEnter } from '@ionic/angular'
     styleUrls: ['./equipments-page.component.scss'],
 })
 export class EquipmentsPageComponent implements OnInit, ViewWillEnter {
-    public equipments: IEquipmentSummary[] = []
-    public loading = false
+    public equipments$!: Observable<PartialPick<IEquipmentSummary, 'name'>[]>
+    public loading$!: Observable<boolean>
 
-    public search = ''
+    public search: BehaviorSubject<string> = new BehaviorSubject('')
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private equipmentsService: EquipmentsService,
+        private store: Store<IEquipmentsState>,
     ) {}
 
     ionViewWillEnter() {
-        this.search = ''
+        this.search.next('')
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,22 +46,15 @@ export class EquipmentsPageComponent implements OnInit, ViewWillEnter {
     }
 
     loadEquipments(onComplete?: () => void) {
-        this.search = ''
-        this.loading = true
+        this.search.next('')
+
         this.activatedRoute.params
             .pipe(
                 take(1),
                 map((params) => params['id']),
-                switchMap((id) => this.equipmentsService.getEquipmentList(id)),
             )
-            .subscribe({
-                next: (equipments) => {
-                    this.equipments = equipments
-                    this.loading = false
-                },
-                error: (error) => {
-                    console.log(error)
-                },
+            .subscribe((equipment_type_id) => {
+                this.store.dispatch(loadEquipmentList({ equipment_type_id }))
             })
         onComplete && onComplete()
     }
@@ -55,20 +63,27 @@ export class EquipmentsPageComponent implements OnInit, ViewWillEnter {
         return `/equipment/${id}`
     }
 
-    get filteredEquipments() {
-        if (this.search.length < 2) return this.equipments
-
-        const lowercase = this.search?.toLowerCase()
-        return this.equipments.filter((equipment) =>
-            equipment.name.toLowerCase().includes(lowercase),
-        )
-    }
-
     onSearchChange(event: unknown) {
-        this.search = (event as SearchbarCustomEvent).detail.value ?? ''
+        this.search.next((event as SearchbarCustomEvent).detail.value ?? '')
     }
 
     ngOnInit(): void {
+        this.equipments$ = this.store.select(selectEquipmentList).pipe(
+            switchMap((equipments) =>
+                this.search.pipe(
+                    debounce(() => of(1000)),
+                    map((search) => search.toLowerCase()),
+                    map((search) =>
+                        equipments.filter((equipment) =>
+                            equipment.name?.toLowerCase().includes(search),
+                        ),
+                    ),
+                ),
+            ),
+        )
+
+        this.loading$ = this.store.select(selectEquipmentListLoading)
+
         this.loadEquipments()
     }
 }
