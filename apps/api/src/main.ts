@@ -4,7 +4,7 @@ import bodyParser from 'koa-bodyparser'
 import authRouter from './routes/auth'
 import { setupDatabase } from './shared/database'
 import Router from 'koa-router'
-import { authMiddleware } from './middleware/auth'
+import { authMiddleware } from './middleware/authn'
 import cors from '@koa/cors'
 import equipmentTypesRouter from './routes/equipment-types'
 
