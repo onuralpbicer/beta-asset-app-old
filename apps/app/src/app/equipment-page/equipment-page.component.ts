@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core'
-import { EquipmentService } from './equipment.service'
 import { ActivatedRoute } from '@angular/router'
-import { take, map, switchMap } from 'rxjs'
-import { IEquipmentDetails } from '../models/model'
+import { map, switchMap, Observable } from 'rxjs'
+import { ID } from '../models/model'
+import { Store } from '@ngrx/store'
+import {
+    IEquipmentEntity,
+    IEquipmentsState,
+    selectEquipment,
+} from '../equipments/equipments.reducer'
+import { loadEquipmentDetails } from '../equipments/equipments.actions'
 
 @Component({
     selector: 'beta-asset-equipment-page',
@@ -10,15 +16,29 @@ import { IEquipmentDetails } from '../models/model'
     styleUrls: ['./equipment-page.component.scss'],
 })
 export class EquipmentPageComponent implements OnInit {
-    public equipment: IEquipmentDetails | undefined = undefined
-    public loading = false
+    public equipment$!: Observable<IEquipmentEntity | undefined>
+    public loading$!: Observable<boolean>
+
+    public id$!: Observable<ID>
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private equipmentService: EquipmentService,
+        private store: Store<IEquipmentsState>,
     ) {}
 
     ngOnInit(): void {
+        this.id$ = this.activatedRoute.params.pipe(
+            map((params) => params['id']),
+        )
+
+        this.equipment$ = this.id$.pipe(
+            switchMap((id) => this.store.select(selectEquipment(id))),
+        )
+
+        this.loading$ = this.equipment$.pipe(
+            map((equipment) => equipment?.loading || false),
+        )
+
         this.loadEquipmentDetails()
     }
 
@@ -28,26 +48,9 @@ export class EquipmentPageComponent implements OnInit {
     }
 
     loadEquipmentDetails(onComplete?: () => void) {
-        this.loading = true
-
-        this.activatedRoute.params
-            .pipe(
-                take(1),
-                map((params) => params['id']),
-                switchMap((id) =>
-                    this.equipmentService.getEquipmentDetails(id),
-                ),
-            )
-            .subscribe({
-                next: (equipment) => {
-                    this.equipment = equipment
-                    this.loading = false
-                    console.log(equipment)
-                },
-                error: (error) => {
-                    console.log(error)
-                },
-            })
+        this.id$.subscribe((equipment_id) => {
+            this.store.dispatch(loadEquipmentDetails({ equipment_id }))
+        })
         onComplete && onComplete()
     }
 }

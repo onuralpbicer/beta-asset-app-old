@@ -1,5 +1,5 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity'
-import { IEquipmentDetails } from '../models/model'
+import { ID, IEquipmentDetails } from '../models/model'
 import {
     createFeatureSelector,
     createReducer,
@@ -8,6 +8,9 @@ import {
 } from '@ngrx/store'
 import { login } from '../login/login.actions'
 import {
+    loadEquipmentDetails,
+    loadEquipmentDetailsFail,
+    loadEquipmentDetailsSuccess,
     loadEquipmentList,
     loadEquipmentListFail,
     loadEquipmentListSuccess,
@@ -16,13 +19,15 @@ import { PartialOmit } from '../helpers/types'
 
 export const EQUIPMENTS_FEATURE_KEY = 'equipments'
 
-type Entity = PartialOmit<IEquipmentDetails, 'id'> & { loading: boolean }
+export type IEquipmentEntity = PartialOmit<IEquipmentDetails, 'id'> & {
+    loading: boolean
+}
 
-const adapter = createEntityAdapter<Entity>()
+const adapter = createEntityAdapter<IEquipmentEntity>()
 
 export interface IEquipmentsState {
     loading: boolean
-    entities: EntityState<Entity>
+    entities: EntityState<IEquipmentEntity>
 }
 
 const initialState: IEquipmentsState = {
@@ -47,6 +52,27 @@ export const reducer = createReducer(
         ...state,
         loading: false,
     })),
+    on(loadEquipmentDetails, (state, { equipment_id }) => ({
+        ...state,
+        entities: adapter.upsertOne(
+            { loading: true, id: equipment_id },
+            state.entities,
+        ),
+    })),
+    on(loadEquipmentDetailsSuccess, (state, { equipment }) => ({
+        ...state,
+        entities: adapter.upsertOne(
+            { loading: false, ...equipment },
+            state.entities,
+        ),
+    })),
+    on(loadEquipmentDetailsFail, (state, { equipment_id }) => ({
+        ...state,
+        entities: adapter.upsertOne(
+            { loading: true, id: equipment_id },
+            state.entities,
+        ),
+    })),
     on(login, () => initialState),
 )
 
@@ -62,3 +88,6 @@ export const selectEquipmentListLoading = createSelector(
     selector,
     (state) => state.loading,
 )
+
+export const selectEquipment = (id: ID) =>
+    createSelector(selectEntities, (entity) => entity.entities[id])

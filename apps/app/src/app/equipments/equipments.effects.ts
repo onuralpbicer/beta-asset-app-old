@@ -4,6 +4,9 @@ import { switchMap, retry, map, catchError, of } from 'rxjs'
 import { devDelay } from '../helpers/observable'
 import { EquipmentsService } from './equipments.service'
 import {
+    loadEquipmentDetails,
+    loadEquipmentDetailsFail,
+    loadEquipmentDetailsSuccess,
     loadEquipmentList,
     loadEquipmentListFail,
     loadEquipmentListSuccess,
@@ -28,6 +31,25 @@ export class EquipmentsEffects {
                     catchError((err) => {
                         console.log(err)
                         return of(loadEquipmentListFail())
+                    }),
+                ),
+            ),
+        ),
+    )
+
+    public loadEquipmentDetails$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(loadEquipmentDetails),
+            switchMap(({ equipment_id }) =>
+                this.service.getEquipmentDetails(equipment_id).pipe(
+                    retry(3),
+                    devDelay(),
+                    map((equipment) =>
+                        loadEquipmentDetailsSuccess({ equipment }),
+                    ),
+                    catchError((err) => {
+                        console.log(err)
+                        return of(loadEquipmentDetailsFail({ equipment_id }))
                     }),
                 ),
             ),

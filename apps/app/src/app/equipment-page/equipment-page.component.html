@@ -6,8 +6,13 @@
             slot="start"
         ></ion-back-button>
         <ion-title class="ion-text-center">
-            <ion-text *ngIf="!loading || equipment?.name; else loadingTitle">
-                {{ equipment?.name }}
+            <ion-text
+                *ngIf="
+                    (loading$ | async) === false || (equipment$ | async)?.name;
+                    else loadingTitle
+                "
+            >
+                {{ (equipment$ | async)?.name }}
             </ion-text>
             <ng-template #loadingTitle>
                 <ion-skeleton-text
@@ -22,11 +27,11 @@
     <ion-refresher
         slot="fixed"
         (ionRefresh)="refresh($event)"
-        [disabled]="loading"
+        [disabled]="loading$ | async"
     ></ion-refresher>
     <!--  -->
-    <ng-component *ngIf="!loading; else pageLoading">
-        <ng-container *ngIf="equipment as e; else pageLoading">
+    <ng-container *ngIf="(loading$ | async) === false; else pageLoading">
+        <ng-container *ngIf="equipment$ | async as e; else pageLoading">
             <ion-text>General</ion-text>
             <ion-item>
                 <ion-label>Name</ion-label>
@@ -58,7 +63,7 @@
                 <ion-text>{{ field.value }}</ion-text>
             </ion-item>
         </ng-container>
-    </ng-component>
+    </ng-container>
     <ng-template #pageLoading>
         <ion-skeleton-text [animated]="true" class="title"></ion-skeleton-text>
         <ion-skeleton-text [animated]="true"></ion-skeleton-text>
