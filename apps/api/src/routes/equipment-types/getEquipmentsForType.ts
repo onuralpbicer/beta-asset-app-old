@@ -13,7 +13,7 @@ const getEquipmentsForType: IStateMiddleware = async (ctx) => {
         where: {
             equipment_type_id,
             Equipment_Types: {
-                id: org_id,
+                org_id,
             },
         },
     })
