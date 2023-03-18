@@ -2,13 +2,11 @@ import Router from 'koa-router'
 import getEquipmentTypes from './getEquipmentTypes'
 import getEquipmentsForType from './getEquipmentsForType'
 import { BadRequestError } from '../../middleware/error'
-import { orgIDAuthZ } from '../../middleware/authz'
 
 const router = new Router({
     prefix: '/equipment-types',
 })
 
-router.use(orgIDAuthZ)
 router.get('/', getEquipmentTypes)
 
 const idRouter = new Router({
