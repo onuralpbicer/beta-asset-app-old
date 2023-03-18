@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core'
-import { EquipmentTypesService } from './equipment-types-page.service'
 import { ID, IEquipmentTypes } from '../models/model'
 import { SearchbarCustomEvent, ViewWillEnter } from '@ionic/angular'
+import { Store } from '@ngrx/store'
+import {
+    IEquipmentTypesState,
+    selectEquipmentTypes,
+    selectEquipmentTypesLoading,
+} from '../equipment-types/equipment-types.reducer'
+import { loadEquipmentTypes } from '../equipment-types/equipment-types.actions'
+import { BehaviorSubject, Observable, debounce, map, of, switchMap } from 'rxjs'
 
 @Component({
     selector: 'beta-asset-equipment-types',
@@ -9,15 +16,15 @@ import { SearchbarCustomEvent, ViewWillEnter } from '@ionic/angular'
     styleUrls: ['./equipment-types-page.component.scss'],
 })
 export class EquipmentTypesPageComponent implements OnInit, ViewWillEnter {
-    public equipmentTypes: IEquipmentTypes[] = []
-    public loading = false
+    public equipmentTypes$!: Observable<IEquipmentTypes[]>
+    public loading$!: Observable<boolean>
 
-    public search = ''
+    public search: BehaviorSubject<string> = new BehaviorSubject('')
 
-    constructor(private equipmentTypesService: EquipmentTypesService) {}
+    constructor(private store: Store<IEquipmentTypesState>) {}
 
     ionViewWillEnter() {
-        this.search = ''
+        this.search.next('')
     }
 
     getRouterLink(id: ID) {
@@ -30,34 +37,33 @@ export class EquipmentTypesPageComponent implements OnInit, ViewWillEnter {
     }
 
     loadEquipmentTypes(onComplete?: () => void) {
-        this.search = ''
-        this.loading = true
-        this.equipmentTypesService.getEquipmentTypes().subscribe({
-            next: (equipmentTypes) => {
-                this.equipmentTypes = equipmentTypes
-                this.loading = false
-            },
-            error: (error) => {
-                console.log(error)
-            },
-        })
+        this.search.next('')
+
+        this.store.dispatch(loadEquipmentTypes())
         onComplete && onComplete()
     }
 
-    get filteredEquipmentTypes() {
-        if (this.search.length < 2) return this.equipmentTypes
-
-        const lowercase = this.search?.toLowerCase()
-        return this.equipmentTypes.filter((equipmentType) =>
-            equipmentType.name.toLowerCase().includes(lowercase),
-        )
-    }
-
     onSearchChange(event: unknown) {
-        this.search = (event as SearchbarCustomEvent).detail.value ?? ''
+        this.search.next((event as SearchbarCustomEvent).detail.value ?? '')
     }
 
     ngOnInit(): void {
+        this.equipmentTypes$ = this.store.select(selectEquipmentTypes).pipe(
+            switchMap((equipmentTypes) =>
+                this.search.pipe(
+                    debounce(() => of(1000)),
+                    map((search) => search.toLowerCase()),
+                    map((search) =>
+                        equipmentTypes.filter((equipmentType) =>
+                            equipmentType.name?.toLowerCase().includes(search),
+                        ),
+                    ),
+                ),
+            ),
+        )
+
+        this.loading$ = this.store.select(selectEquipmentTypesLoading)
+
         this.loadEquipmentTypes()
     }
 }
