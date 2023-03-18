@@ -65,14 +65,6 @@ export class EquipmentsPageComponent implements OnInit, ViewWillEnter {
     }
 
     ngOnInit(): void {
-        this.activatedRoute.params
-            .pipe(
-                take(1),
-                map((params) => params['id']),
-                switchMap((id) => this.equipmentsService.getEquipmentList(id)),
-            )
-            .subscribe((data) => {
-                console.log(data)
-            })
+        this.loadEquipments()
     }
 }
