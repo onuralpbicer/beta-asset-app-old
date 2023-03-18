@@ -52,11 +52,10 @@ model Equipment_Type_Fields {
     Equipment_Types   Equipment_Types             @relation(fields: [equipment_type_id], references: [id])
     equipment_type_id String
     name              String
-    value             String
     type              Equipment_Type_Fields_Types
     min               Int?
     max               Int?
-    unit              String
+    unit              String?
     options           String[]                    @default([])
     Equipment_Fields  Equipment_Fields[]
 }
@@ -81,6 +80,7 @@ model Equipment_Fields {
     value                 String
 
     @@id([field_id, equipment_id])
+    @@unique([field_id, equipment_id])
 }
 
 model Equipment_Type_Maintenance_Fields {

@@ -3,6 +3,7 @@ import { IStateMiddleware } from '../../shared/types'
 
 const getEquipmentsForType: IStateMiddleware = async (ctx) => {
     const equipment_type_id = ctx.params.id
+    const { org_id } = ctx.state
 
     ctx.body = await prisma.equipments.findMany({
         select: {
@@ -11,6 +12,9 @@ const getEquipmentsForType: IStateMiddleware = async (ctx) => {
         },
         where: {
             equipment_type_id,
+            Equipment_Types: {
+                id: org_id,
+            },
         },
     })
 }

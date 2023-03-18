@@ -7,6 +7,7 @@ import Router from 'koa-router'
 import { authMiddleware } from './middleware/authn'
 import cors from '@koa/cors'
 import equipmentTypesRouter from './routes/equipment-types'
+import equipmentsRouter from './routes/equipments'
 
 const host = process.env.HOST ?? 'localhost'
 const port = process.env.PORT ? Number(process.env.PORT) : 3000
@@ -29,6 +30,7 @@ const authenticatedRoutes = new Router()
 
 authenticatedRoutes.use(authMiddleware)
 authenticatedRoutes.use(equipmentTypesRouter.routes())
+authenticatedRoutes.use(equipmentsRouter.routes())
 
 authenticatedRoutes.get('/', (ctx) => {
     ctx.body = {
