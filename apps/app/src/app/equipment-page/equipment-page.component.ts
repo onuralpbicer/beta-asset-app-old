@@ -22,6 +22,11 @@ export class EquipmentPageComponent implements OnInit {
         this.loadEquipmentDetails()
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    refresh(event: any) {
+        this.loadEquipmentDetails(() => event.target.complete())
+    }
+
     loadEquipmentDetails(onComplete?: () => void) {
         this.loading = true
 

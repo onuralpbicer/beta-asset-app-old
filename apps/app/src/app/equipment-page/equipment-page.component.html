@@ -19,37 +19,55 @@
     </ion-toolbar>
 </ion-header>
 <ion-content [forceOverscroll]="false">
+    <ion-refresher
+        slot="fixed"
+        (ionRefresh)="refresh($event)"
+        [disabled]="loading"
+    ></ion-refresher>
     <!--  -->
-    <ng-container *ngIf="equipment as e">
-        <ion-text>General</ion-text>
-        <ion-item>
-            <ion-label>Name</ion-label>
-            <ion-text>{{ e.name }}</ion-text>
-        </ion-item>
-        <ion-item>
-            <ion-label>Type</ion-label>
-            <ion-text>{{ e.type }}</ion-text>
-        </ion-item>
-        <ion-item>
-            <ion-label>Location</ion-label>
-            <ion-text>{{ e.location }}</ion-text>
-        </ion-item>
-        <ion-item>
-            <ion-label>Brand</ion-label>
-            <ion-text>{{ e.brand }}</ion-text>
-        </ion-item>
-        <ion-item>
-            <ion-label>Serial Number</ion-label>
-            <ion-text>{{ e.serial_number }}</ion-text>
-        </ion-item>
+    <ng-component *ngIf="!loading; else pageLoading">
+        <ng-container *ngIf="equipment as e; else pageLoading">
+            <ion-text>General</ion-text>
+            <ion-item>
+                <ion-label>Name</ion-label>
+                <ion-text>{{ e.name }}</ion-text>
+            </ion-item>
+            <ion-item>
+                <ion-label>Type</ion-label>
+                <ion-text>{{ e.type }}</ion-text>
+            </ion-item>
+            <ion-item>
+                <ion-label>Location</ion-label>
+                <ion-text>{{ e.location }}</ion-text>
+            </ion-item>
+            <ion-item>
+                <ion-label>Brand</ion-label>
+                <ion-text>{{ e.brand }}</ion-text>
+            </ion-item>
+            <ion-item>
+                <ion-label>Serial Number</ion-label>
+                <ion-text>{{ e.serial_number }}</ion-text>
+            </ion-item>
 
-        <ion-text>Fields</ion-text>
-        <ion-item *ngFor="let field of e.fields">
-            <ion-label>
-                {{ field.name }}
-                <ion-text *ngIf="field.unit">({{ field.unit }})</ion-text>
-            </ion-label>
-            <ion-text>{{ field.value }}</ion-text>
-        </ion-item>
-    </ng-container>
+            <ion-text>Fields</ion-text>
+            <ion-item *ngFor="let field of e.fields">
+                <ion-label>
+                    {{ field.name }}
+                    <ion-text *ngIf="field.unit">({{ field.unit }})</ion-text>
+                </ion-label>
+                <ion-text>{{ field.value }}</ion-text>
+            </ion-item>
+        </ng-container>
+    </ng-component>
+    <ng-template #pageLoading>
+        <ion-skeleton-text [animated]="true" class="title"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" class="title"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+    </ng-template>
 </ion-content>
