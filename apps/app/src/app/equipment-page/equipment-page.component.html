@@ -1,0 +1,55 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-back-button
+            defaultHref="/home"
+            text=""
+            slot="start"
+        ></ion-back-button>
+        <ion-title class="ion-text-center">
+            <ion-text *ngIf="!loading || equipment?.name; else loadingTitle">
+                {{ equipment?.name }}
+            </ion-text>
+            <ng-template #loadingTitle>
+                <ion-skeleton-text
+                    [animated]="true"
+                    class="title"
+                ></ion-skeleton-text>
+            </ng-template>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content [forceOverscroll]="false">
+    <!--  -->
+    <ng-container *ngIf="equipment as e">
+        <ion-text>General</ion-text>
+        <ion-item>
+            <ion-label>Name</ion-label>
+            <ion-text>{{ e.name }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label>Type</ion-label>
+            <ion-text>{{ e.type }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label>Location</ion-label>
+            <ion-text>{{ e.location }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label>Brand</ion-label>
+            <ion-text>{{ e.brand }}</ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-label>Serial Number</ion-label>
+            <ion-text>{{ e.serial_number }}</ion-text>
+        </ion-item>
+
+        <ion-text>Fields</ion-text>
+        <ion-item *ngFor="let field of e.fields">
+            <ion-label>
+                {{ field.name }}
+                <ion-text *ngIf="field.unit">({{ field.unit }})</ion-text>
+            </ion-label>
+            <ion-text>{{ field.value }}</ion-text>
+        </ion-item>
+    </ng-container>
+</ion-content>

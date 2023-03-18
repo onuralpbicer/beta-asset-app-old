@@ -23,6 +23,7 @@
             class="ion-text-center"
             *ngFor="let equipment of filteredEquipments"
             lines="none"
+            [routerLink]="getRouterLink(equipment.id)"
         >
             {{ equipment.name }}
         </ion-text>

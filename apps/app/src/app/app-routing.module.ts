@@ -5,6 +5,14 @@ import { authGuard, loggedInGuard } from './login/login.guard'
 
 const routes: Routes = [
     {
+        path: 'equipment',
+        canActivate: [authGuard],
+        loadChildren: () =>
+            import('./equipment-page/equipment-page.module').then(
+                (m) => m.EquipmentPageModule,
+            ),
+    },
+    {
         path: 'equipments',
         canActivate: [authGuard],
         loadChildren: () =>

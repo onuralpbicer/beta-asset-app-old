@@ -51,6 +51,10 @@ export class EquipmentsPageComponent implements OnInit, ViewWillEnter {
         onComplete && onComplete()
     }
 
+    getRouterLink(id: string) {
+        return `/equipment/${id}`
+    }
+
     get filteredEquipments() {
         if (this.search.length < 2) return this.equipments
 
