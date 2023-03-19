@@ -4,6 +4,7 @@ import { EquipmentPageComponent } from './equipment-page.component'
 import { EquipmentPageRoutingModule } from './equipment-page.routing-module'
 import { IonicModule } from '@ionic/angular'
 import { EquipmentsModule } from '../equipments/equipments.module'
+import { MaintenancesModule } from '../maintenances/maintenances.module'
 
 @NgModule({
     declarations: [EquipmentPageComponent],
@@ -12,6 +13,7 @@ import { EquipmentsModule } from '../equipments/equipments.module'
         EquipmentPageRoutingModule,
         IonicModule,
         EquipmentsModule,
+        MaintenancesModule,
     ],
 })
 export class EquipmentPageModule {}

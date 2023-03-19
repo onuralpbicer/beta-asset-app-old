@@ -1,7 +1,12 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import environment from '../../environment/environment'
-import { ID, IEquipmentDetails, IEquipmentSummary } from '../models/model'
+import {
+    ID,
+    IEquipmentDetails,
+    IEquipmentSummary,
+    IMaintenanceSummary,
+} from '../models/model'
 
 @Injectable({
     providedIn: 'root',
@@ -19,6 +24,12 @@ export class EquipmentsService {
     public getEquipmentDetails(equipment_id: ID) {
         return this.http.get<IEquipmentDetails>(
             environment.apiUrl + `/equipments/${equipment_id}`,
+        )
+    }
+
+    public getMaintenanceList(equipment_id: ID) {
+        return this.http.get<IMaintenanceSummary[]>(
+            environment.apiUrl + `/equipments/${equipment_id}/maintenances`,
         )
     }
 }

@@ -15,13 +15,11 @@ import {
     loadEquipmentListFail,
     loadEquipmentListSuccess,
 } from './equipments.actions'
-import { PartialOmit } from '../helpers/types'
+import { Loading, PartialOmit } from '../helpers/types'
 
 export const EQUIPMENTS_FEATURE_KEY = 'equipments'
 
-export type IEquipmentEntity = PartialOmit<IEquipmentDetails, 'id'> & {
-    loading: boolean
-}
+export type IEquipmentEntity = Loading<PartialOmit<IEquipmentDetails, 'id'>>
 
 const adapter = createEntityAdapter<IEquipmentEntity>()
 

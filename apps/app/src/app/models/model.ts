@@ -24,3 +24,22 @@ export interface IEquipmentTypeField {
     unit: string
     value: string
 }
+
+export interface IMaintenanceSummary {
+    id: ID
+    datetime: Date
+    type: 'PERIODICAL' | 'FAULT'
+    performed_by: string
+    notes?: string
+    equipment_id: ID
+}
+
+export interface IMaintenanceFieldValue {
+    description: string
+    status: 'GOOD' | 'FIXED' | 'REPLACED'
+    notes?: string
+}
+
+export interface IMaintenanceDetails extends IMaintenanceSummary {
+    fields: IMaintenanceFieldValue[]
+}
