@@ -24,6 +24,9 @@ const getMaintenanceSummaryForEquipment: IStateMiddleware = async (ctx) => {
                 },
             },
         },
+        orderBy: {
+            datetime: 'desc',
+        },
     })
 
     ctx.body = result.map(({ Users, ...rest }) => ({
