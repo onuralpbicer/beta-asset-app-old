@@ -64,7 +64,11 @@
             </ion-item>
 
             <ion-text>Maintenances</ion-text>
-            <beta-asset-maintenance-summary></beta-asset-maintenance-summary>
+            <ng-container *ngIf="id$ | async as id">
+                <beta-asset-maintenance-summary
+                    [equipment_id]="id"
+                ></beta-asset-maintenance-summary>
+            </ng-container>
         </ng-container>
     </ng-container>
     <ng-template #pageLoading>
