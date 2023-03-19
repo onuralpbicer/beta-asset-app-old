@@ -5,7 +5,6 @@ const getMaintenanceDetails: IStateMiddleware = async (ctx) => {
     const maintenance_id = ctx.params.id
     const { org_id } = ctx.state
 
-    // Query to be used later for maintenance details
     const { Users, Maintenance_Fields, Equipments, ...rest } =
         await prisma.maintenances.findFirstOrThrow({
             select: {
