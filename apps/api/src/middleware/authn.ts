@@ -27,7 +27,9 @@ export const authMiddleware: IStateMiddleware = async (ctx, next) => {
         console.log('error')
         console.log(err.message)
         if (err.message === 'invalid token') throw new UnauthorizedError()
-        else throw err
+        else if (err.message === 'jwt expired')
+            throw new UnauthorizedError('Token expired')
+        else throw new UnauthorizedError(err.message)
     }
 
     await next()
