@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { map, switchMap, Observable } from 'rxjs'
 import { ID } from '../models/model'
 import { Store } from '@ngrx/store'
@@ -24,6 +24,7 @@ export class EquipmentPageComponent implements OnInit {
     constructor(
         private activatedRoute: ActivatedRoute,
         private store: Store<IEquipmentsState>,
+        private router: Router,
     ) {}
 
     ngOnInit(): void {
@@ -52,5 +53,11 @@ export class EquipmentPageComponent implements OnInit {
             this.store.dispatch(loadEquipmentDetails({ equipment_id }))
         })
         onComplete && onComplete()
+    }
+
+    gotoNewMaintenance() {
+        this.router.navigate(['maintenance', 'new'], {
+            relativeTo: this.activatedRoute,
+        })
     }
 }

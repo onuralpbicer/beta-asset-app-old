@@ -13,6 +13,13 @@ const routes: Routes = [
             ),
     },
     {
+        path: 'equipment/:id/maintenance',
+        loadChildren: () =>
+            import('./maintenance-page/maintenance-page.module').then(
+                (m) => m.MaintenancePageModule,
+            ),
+    },
+    {
         path: 'equipments',
         canActivate: [authGuard],
         loadChildren: () =>
