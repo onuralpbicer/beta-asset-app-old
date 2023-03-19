@@ -1,16 +1,17 @@
 import { Injectable, inject } from '@angular/core'
-import { createEffect, Actions, ofType } from '@ngrx/effects'
+import { createEffect, Actions, ofType, OnInitEffects } from '@ngrx/effects'
 
 import * as LoginActions from './login.actions'
 
-import { switchMap, catchError, of, map, tap } from 'rxjs'
+import { switchMap, catchError, of, map, tap, filter } from 'rxjs'
 import { LoginService } from './login.service'
-import { Store } from '@ngrx/store'
-import { ILoginState } from './login.reducer'
+import { Action, Store } from '@ngrx/store'
+import { ILoginState, selectAuthToken } from './login.reducer'
 import { NavController } from '@ionic/angular'
+import jwtDecode, { JwtPayload } from 'jwt-decode'
 
 @Injectable()
-export class LoginEffects {
+export class LoginEffects implements OnInitEffects {
     private actions$ = inject(Actions)
 
     constructor(
@@ -63,4 +64,27 @@ export class LoginEffects {
             ),
         { dispatch: false },
     )
+
+    public test$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoginActions.loginInit),
+            switchMap(() =>
+                // Not take(1)'ing here on purpose since I want this to always run when auth token changes
+                this.store.select(selectAuthToken).pipe(
+                    filter(Boolean),
+                    map((authToken) => jwtDecode<JwtPayload>(authToken)),
+                    switchMap((decoded) =>
+                        this.service.isTokenExpired(decoded)
+                            ? of(LoginActions.logout())
+                            : this.service.setupExpiry(decoded),
+                    ),
+                    catchError(() => of(LoginActions.logout())),
+                ),
+            ),
+        ),
+    )
+
+    ngrxOnInitEffects(): Action {
+        return LoginActions.loginInit()
+    }
 }
