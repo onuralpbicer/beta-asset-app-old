@@ -27,6 +27,7 @@ const getMaintenanceDetails: IStateMiddleware = async (ctx) => {
                 },
                 Equipments: {
                     select: {
+                        id: true,
                         Equipment_Types: {
                             select: {
                                 Equipment_Type_Maintenance_Fields: {
@@ -57,6 +58,7 @@ const getMaintenanceDetails: IStateMiddleware = async (ctx) => {
     ctx.body = {
         ...rest,
         performed_by: Users.name,
+        equipment_id: Equipments.id,
         fields: Equipments.Equipment_Types.Equipment_Type_Maintenance_Fields.map(
             ({ id, ...rest }) => {
                 const value = maintenanceFieldValues.get(id)

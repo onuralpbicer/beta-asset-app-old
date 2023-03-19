@@ -28,6 +28,7 @@ const getMaintenanceSummaryForEquipment: IStateMiddleware = async (ctx) => {
 
     ctx.body = result.map(({ Users, ...rest }) => ({
         ...rest,
+        equipment_id,
         performed_by: Users.name,
     }))
 }
