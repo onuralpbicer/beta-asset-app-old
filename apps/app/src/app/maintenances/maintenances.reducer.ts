@@ -85,7 +85,12 @@ const { selectAll } = adapter.getSelectors()
 
 const selectEntities = createSelector(selector, (state) => state.entities)
 
-export const selectMaintenanceList = createSelector(selectEntities, selectAll)
+export const selectMaintenanceList = (equipment_id: ID) =>
+    createSelector(selectEntities, (state) =>
+        selectAll(state).filter(
+            (maintenance) => maintenance.equipment_id === equipment_id,
+        ),
+    )
 
 export const selectMaintenanceListLoading = createSelector(
     selector,

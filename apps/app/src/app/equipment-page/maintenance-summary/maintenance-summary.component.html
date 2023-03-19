@@ -1,0 +1,17 @@
+<ng-container *ngIf="(loading$ | async) === false; else loading">
+    <ion-item
+        class="ion-text-center"
+        *ngFor="let maintenance of maintenances$ | async"
+        lines="none"
+    >
+        <ion-text>
+            {{ maintenance.datetime | date : 'medium' }} -
+            {{ maintenance.performed_by }}
+        </ion-text>
+    </ion-item>
+</ng-container>
+<ng-template #loading>
+    <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+</ng-template>

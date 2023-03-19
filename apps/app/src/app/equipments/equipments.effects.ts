@@ -43,7 +43,7 @@ export class EquipmentsEffects {
             switchMap(({ equipment_id }) =>
                 this.service.getEquipmentDetails(equipment_id).pipe(
                     retry(3),
-                    devDelay(),
+                    // devDelay(),
                     map((equipment) =>
                         loadEquipmentDetailsSuccess({ equipment }),
                     ),

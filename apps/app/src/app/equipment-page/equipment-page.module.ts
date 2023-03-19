@@ -5,9 +5,10 @@ import { EquipmentPageRoutingModule } from './equipment-page.routing-module'
 import { IonicModule } from '@ionic/angular'
 import { EquipmentsModule } from '../equipments/equipments.module'
 import { MaintenancesModule } from '../maintenances/maintenances.module'
+import { MaintenanceSummaryComponent } from './maintenance-summary/maintenance-summary.component'
 
 @NgModule({
-    declarations: [EquipmentPageComponent],
+    declarations: [EquipmentPageComponent, MaintenanceSummaryComponent],
     imports: [
         CommonModule,
         EquipmentPageRoutingModule,
