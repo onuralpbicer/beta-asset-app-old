@@ -41,6 +41,7 @@ const reducer = createReducer(
         ...state,
         ...initialLoginState,
     })),
+    on(LoginActions.logout, () => initialLoginState),
 )
 
 const loginSelector = createFeatureSelector<ILoginState>(LOGIN_FEATURE_KEY)

@@ -16,6 +16,8 @@ import { BehaviorSubject, Observable, debounce, map, of, switchMap } from 'rxjs'
     styleUrls: ['./equipment-types-page.component.scss'],
 })
 export class EquipmentTypesPageComponent implements OnInit, ViewWillEnter {
+    public readonly sideMenuID = 'side-menu'
+
     public equipmentTypes$!: Observable<IEquipmentTypes[]>
     public loading$!: Observable<boolean>
 

@@ -5,13 +5,19 @@ import * as LoginActions from './login.actions'
 
 import { switchMap, catchError, of, map, tap } from 'rxjs'
 import { LoginService } from './login.service'
-import { Router } from '@angular/router'
+import { Store } from '@ngrx/store'
+import { ILoginState } from './login.reducer'
+import { NavController } from '@ionic/angular'
 
 @Injectable()
 export class LoginEffects {
     private actions$ = inject(Actions)
 
-    constructor(private service: LoginService, private router: Router) {}
+    constructor(
+        private service: LoginService,
+        private router: NavController,
+        private store: Store<ILoginState>,
+    ) {}
 
     public login$ = createEffect(() =>
         this.actions$.pipe(
@@ -39,11 +45,22 @@ export class LoginEffects {
             this.actions$.pipe(
                 ofType(LoginActions.loginSuccess),
                 tap(() => {
-                    this.router.navigateByUrl('/home')
+                    this.router.navigateForward('/home')
                 }),
             ),
         {
             dispatch: false,
         },
+    )
+
+    public logout$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(LoginActions.logout),
+                tap(() => {
+                    this.router.navigateBack('/login')
+                }),
+            ),
+        { dispatch: false },
     )
 }

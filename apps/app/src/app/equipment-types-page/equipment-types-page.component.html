@@ -1,9 +1,13 @@
 <ion-header>
     <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
         <ion-title class="ion-text-center"> Equipment Types </ion-title>
     </ion-toolbar>
 </ion-header>
-<ion-content [forceOverscroll]="false">
+<beta-asset-side-menu [contentId]="sideMenuID"></beta-asset-side-menu>
+<ion-content [forceOverscroll]="false" [id]="sideMenuID">
     <ion-refresher
         slot="fixed"
         (ionRefresh)="refresh($event)"

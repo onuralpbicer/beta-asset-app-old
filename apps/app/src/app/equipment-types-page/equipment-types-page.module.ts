@@ -4,6 +4,7 @@ import { EquipmentTypesPageRoutingModule } from './equipment-types-page.routing-
 import { IonicModule } from '@ionic/angular'
 import { CommonModule } from '@angular/common'
 import { EquipmentTypesModule } from '../equipment-types/equipment-types.module'
+import { SideMenuModule } from '../side-menu/side-menu.module'
 
 @NgModule({
     declarations: [EquipmentTypesPageComponent],
@@ -12,6 +13,7 @@ import { EquipmentTypesModule } from '../equipment-types/equipment-types.module'
         IonicModule,
         CommonModule,
         EquipmentTypesModule,
+        SideMenuModule,
     ],
 })
 export class EquipmentsTypesPageModule {}
