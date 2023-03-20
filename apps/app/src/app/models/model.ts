@@ -16,6 +16,7 @@ export interface IEquipmentDetails extends IEquipmentSummary {
     serial_number: string
     type: IEquipmentTypes['name']
     fields: IEquipmentTypeField[]
+    maintenanceFields: IMaintenanceField[]
 }
 
 export interface IEquipmentTypeField {
@@ -32,6 +33,11 @@ export interface IMaintenanceSummary {
     performed_by: string
     notes?: string
     equipment_id: ID
+}
+
+export interface IMaintenanceField {
+    id: ID
+    description: string
 }
 
 export interface IMaintenanceFieldValue {
