@@ -36,6 +36,10 @@ export class EquipmentPageComponent implements OnInit {
             switchMap((id) => this.store.select(selectEquipment(id))),
         )
 
+        this.equipment$.subscribe((equipment) => {
+            if (equipment?.loading === false) this.gotoNewMaintenance()
+        })
+
         this.loading$ = this.equipment$.pipe(
             map((equipment) => equipment?.loading || false),
         )

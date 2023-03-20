@@ -1,1 +1,72 @@
-<p>maintenance-page works!</p>
+<ion-header>
+    <ion-toolbar>
+        <ion-back-button
+            defaultHref="/home"
+            text=""
+            slot="start"
+        ></ion-back-button>
+        <ion-title class="ion-text-center"> New Maintenance </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content [forceOverscroll]="false">
+    <form [formGroup]="form" (ngSubmit)="submit()" autocomplete="off">
+        <ion-item>
+            <ion-label>Date Time</ion-label>
+            <ion-datetime-button datetime="datetime"></ion-datetime-button>
+        </ion-item>
+
+        <ion-item>
+            <ion-label> Maintenance Type </ion-label>
+            <ion-select formControlName="type">
+                <ion-select-option value="PERIODICAL"
+                    >Periodical</ion-select-option
+                >
+                <ion-select-option value="FAULT">Fault</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Maintenance Notes</ion-label>
+            <ion-textarea formControlName="notes"></ion-textarea>
+        </ion-item>
+
+        <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+                <ion-datetime
+                    id="datetime"
+                    formControlName="datetime"
+                ></ion-datetime>
+            </ng-template>
+        </ion-modal>
+
+        <ion-text>Custom fields</ion-text>
+        <ng-container formArrayName="fields">
+            <ng-container *ngFor="let field of fields.controls; let i = index">
+                <ng-container [formGroupName]="i">
+                    <ion-item>
+                        <ion-label>{{
+                            formFieldDescriptions.get(field.value.id)
+                        }}</ion-label></ion-item
+                    >
+
+                    <ion-segment formControlName="status">
+                        <ion-segment-button value="GOOD"
+                            >GOOD</ion-segment-button
+                        >
+                        <ion-segment-button value="FIXED"
+                            >FIXED</ion-segment-button
+                        >
+                        <ion-segment-button value="REPLACED"
+                            >REPLACED</ion-segment-button
+                        >
+                    </ion-segment>
+                    <ion-item>
+                        <ion-label>Notes</ion-label>
+                        <ion-textarea formControlName="notes"></ion-textarea>
+                    </ion-item>
+                </ng-container>
+            </ng-container>
+        </ng-container>
+        <ion-button expand="block" type="submit"> Submit </ion-button>
+    </form>
+</ion-content>

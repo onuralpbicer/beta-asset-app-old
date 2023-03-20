@@ -49,3 +49,8 @@ export interface IMaintenanceFieldValue {
 export interface IMaintenanceDetails extends IMaintenanceSummary {
     fields: IMaintenanceFieldValue[]
 }
+
+export interface IMaintenanceCreateForm
+    extends Omit<IMaintenanceSummary, 'id' | 'performed_by' | 'equipment_id'> {
+    fields: (Omit<IMaintenanceFieldValue, 'description'> & { id: ID })[]
+}
