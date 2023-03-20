@@ -32,6 +32,12 @@ const getEquipmentDetails: IStateMiddleware = async (ctx) => {
                                 },
                             },
                         },
+                        Equipment_Type_Maintenance_Fields: {
+                            select: {
+                                id: true,
+                                description: true,
+                            },
+                        },
                     },
                 },
             },
@@ -52,6 +58,7 @@ const getEquipmentDetails: IStateMiddleware = async (ctx) => {
                 value: Equipment_Fields[0]?.value,
             }),
         ),
+        maintenanceFields: Equipment_Types.Equipment_Type_Maintenance_Fields,
     }
 }
 
