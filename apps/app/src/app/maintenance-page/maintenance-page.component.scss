@@ -1,0 +1,12 @@
+.custom {
+    border-left: 2px solid grey;
+    --padding-start: 1rem;
+
+    &:not(:first-of-type) {
+        margin-top: 1rem;
+    }
+
+    ion-item {
+        --padding-start: 0;
+    }
+}
