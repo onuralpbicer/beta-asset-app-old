@@ -28,7 +28,7 @@
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-<ion-content [forceOverscroll]="false">
+<ion-content [forceOverscroll]="false" class="ion-padding">
     <ion-refresher
         slot="fixed"
         (ionRefresh)="refresh($event)"
@@ -37,9 +37,8 @@
     <!--  -->
     <ng-container *ngIf="(loading$ | async) === false; else pageLoading">
         <ng-container *ngIf="equipment$ | async as e; else pageLoading">
-            <ion-text>General</ion-text>
+            <ion-text> <h1>General</h1> </ion-text>
             <ion-item>
-                <ion-label>Name</ion-label>
                 <ion-text>{{ e.name }}</ion-text>
             </ion-item>
             <ion-item>
@@ -59,7 +58,7 @@
                 <ion-text>{{ e.serial_number }}</ion-text>
             </ion-item>
 
-            <ion-text>Fields</ion-text>
+            <ion-text> <h1>Fields</h1> </ion-text>
             <ion-item *ngFor="let field of e.fields">
                 <ion-label>
                     {{ field.name }}
@@ -68,7 +67,7 @@
                 <ion-text>{{ field.value }}</ion-text>
             </ion-item>
 
-            <ion-text>Maintenances</ion-text>
+            <ion-text> <h1>Maintenances</h1> </ion-text>
             <ng-container *ngIf="id$ | async as id">
                 <beta-asset-maintenance-summary
                     [equipment_id]="id"
