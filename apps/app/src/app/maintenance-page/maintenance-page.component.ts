@@ -74,7 +74,7 @@ export class MaintenancePageComponent implements OnInit {
                 equipment.maintenanceFields?.map((field) => {
                     return this.fb.group({
                         id: [field.id],
-                        status: ['GOOD', Validators.required],
+                        status: [null, Validators.required],
                         notes: [''],
                     })
                 }) ?? [],
