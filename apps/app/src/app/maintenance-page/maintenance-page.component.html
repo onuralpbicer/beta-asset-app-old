@@ -64,7 +64,12 @@
                 </ng-container>
             </ng-container>
         </ng-container>
-        <ion-button expand="block" type="submit" class="ion-margin-top">
+        <ion-button
+            expand="block"
+            type="submit"
+            class="ion-margin-top"
+            [disabled]="this.form.invalid"
+        >
             Submit
         </ion-button>
     </form>

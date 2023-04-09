@@ -6,10 +6,12 @@ import {
     selectEquipment,
 } from '../equipments/equipments.reducer'
 import { ActivatedRoute, Router } from '@angular/router'
-import { combineLatest, map, of, switchMap, take } from 'rxjs'
+import { catchError, combineLatest, map, of, switchMap, take, tap } from 'rxjs'
 import { NavController } from '@ionic/angular'
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { ID } from '../models/model'
+import { HttpClient } from '@angular/common/http'
+import environment from '../../environment/environment'
 
 @Component({
     selector: 'beta-asset-maintenance-page',
@@ -30,6 +32,7 @@ export class MaintenancePageComponent implements OnInit {
         private navController: NavController,
         private router: Router,
         private fb: FormBuilder,
+        private http: HttpClient,
     ) {}
 
     ngOnInit(): void {
@@ -50,8 +53,7 @@ export class MaintenancePageComponent implements OnInit {
                 this.equipment_id = equipment_id
 
                 if (!equipment) {
-                    this.router.navigate(['equipment', equipment_id])
-                    this.navController.setDirection('back')
+                    this.goBack()
                     return
                 }
 
@@ -63,6 +65,10 @@ export class MaintenancePageComponent implements OnInit {
                 )
                 this.setupForm(equipment)
             })
+    }
+
+    goBack() {
+        this.navController.navigateBack(['equipment', this.equipment_id])
     }
 
     setupForm(equipment: IEquipmentEntity) {
@@ -93,6 +99,21 @@ export class MaintenancePageComponent implements OnInit {
     }
 
     submit() {
-        console.log(this.form.value)
+        this.http
+            .post(
+                environment.apiUrl +
+                    `/equipments/${this.equipment_id}/maintenances`,
+                this.form.value,
+            )
+            .pipe(
+                tap(() => {
+                    this.goBack()
+                }),
+                catchError((err) => {
+                    alert(err.message)
+                    return of(err)
+                }),
+            )
+            .subscribe()
     }
 }
