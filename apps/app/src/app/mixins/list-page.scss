@@ -10,7 +10,7 @@
             margin-inline: auto;
 
             padding: 1rem;
-            border-radius: 64px;
+            border-radius: 4px;
 
             &:not(:first-of-type) {
                 margin-top: 1rem;
@@ -18,7 +18,11 @@
         }
 
         ion-text {
-            border: 1px solid white;
+            --item-left-border-width: 3px;
+            --item-background: rgba(13, 13, 13);
+            border-left: var(--item-left-border-width) solid
+                var(--ion-color-primary);
+            background-color: var(--item-background);
         }
     }
 }
