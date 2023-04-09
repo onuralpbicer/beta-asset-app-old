@@ -8,25 +8,26 @@
         <ion-title class="ion-text-center"> Equipments </ion-title>
     </ion-toolbar>
 </ion-header>
-<ion-content [forceOverscroll]="false">
+<ion-content [forceOverscroll]="false" class="ion-padding">
     <ion-refresher
         slot="fixed"
         (ionRefresh)="refresh($event)"
         [disabled]="loading$ | async"
     ></ion-refresher>
     <ion-searchbar
+        class="ion-no-padding"
         [value]="search | async"
         (ionChange)="onSearchChange($event)"
     ></ion-searchbar>
     <ion-list lines="none" *ngIf="(loading$ | async) === false">
-        <ion-text
-            class="ion-text-center"
-            *ngFor="let equipment of equipments$ | async"
-            lines="none"
-            [routerLink]="getRouterLink(equipment.id)"
-        >
-            {{ equipment.name }}
-        </ion-text>
+        <ion-item *ngFor="let equipment of equipments$ | async" color="light">
+            <ion-label
+                class="ion-text-center"
+                [routerLink]="getRouterLink(equipment.id)"
+            >
+                {{ equipment.name }}
+            </ion-label>
+        </ion-item>
     </ion-list>
     <ion-list lines="none" *ngIf="loading$ | async">
         <ion-skeleton-text [animated]="true"></ion-skeleton-text>

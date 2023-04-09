@@ -1,28 +1,25 @@
 @mixin listPage() {
-    ion-list {
+    ion-list:not(.plain) {
         box-sizing: content-box;
 
-        ion-text,
-        ion-skeleton-text {
-            display: block;
-            width: 80%;
-            max-width: 1024px;
-            margin-inline: auto;
+        ion-item {
+            --item-left-border-width: 3px;
+            border-left: var(--item-left-border-width) solid
+                var(--ion-color-primary);
 
-            padding: 1rem;
             border-radius: 4px;
-
             &:not(:first-of-type) {
                 margin-top: 1rem;
             }
         }
+    }
 
-        ion-text {
-            --item-left-border-width: 3px;
-            --item-background: rgba(13, 13, 13);
-            border-left: var(--item-left-border-width) solid
-                var(--ion-color-primary);
-            background-color: var(--item-background);
+    ion-skeleton-text {
+        height: 48px;
+        padding: 1rem;
+        border-radius: 4px;
+        &:not(:first-of-type) {
+            margin-top: 1rem;
         }
     }
 }
