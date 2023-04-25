@@ -13,6 +13,7 @@ import { localStorageSync } from 'ngrx-store-localstorage'
 import { LOGIN_FEATURE_KEY } from './login/login.reducer'
 import { HTTP_INTERCEPTORS } from '@angular/common/http'
 import { AuthTokenInterceptor } from './http-interceptors/auth_token.interceptor'
+import { SettingsModule } from './settings/settings.module'
 
 export function localStorageSyncReducer(
     reducer: ActionReducer<any>,
@@ -44,6 +45,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer]
         ),
         EffectsModule.forRoot([]),
         StoreDevtoolsModule.instrument({ maxAge: 50 }),
+        SettingsModule,
     ],
     providers: [
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
