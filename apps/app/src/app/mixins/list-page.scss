@@ -1,9 +1,11 @@
 @mixin listPage() {
     ion-list:not(.plain) {
+        background: transparent;
+
         box-sizing: content-box;
 
         ion-item {
-            --item-left-border-width: 3px;
+            --item-left-border-width: 6px;
             border-left: var(--item-left-border-width) solid
                 var(--ion-color-primary);
 
